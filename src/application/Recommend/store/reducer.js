@@ -1,12 +1,12 @@
 import { fromJS } from 'immutable'
 import * as actionTypes from './constants'
 
-const defaultStore = fromJS({
+const defaultState = fromJS({
   bannerList: [],
   recommendList: []
 })
 
-export default (state = defaultStore, action) => {
+export default (state = defaultState, action) => {
   switch(action.type) {
     case actionTypes.CHANGE_BANNER:
       return state.set('bannerList', action.data)

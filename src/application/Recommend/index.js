@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { forceCheck } from 'react-lazyload'
+import { actionCreators } from './store'
+import { Content } from './style'
 import Scroll from '../../baseUI/scroll'
 import Slider from '../../components/slider'
 import RecommendList from '../../components/list'
-import { Content } from './style'
-import { connect } from 'react-redux'
-import * as actionTypes from './store/actionCreators'
 
 function Recommend(props) {
   const { bannerList, recommendList } = props
@@ -22,7 +23,7 @@ function Recommend(props) {
 
   return (
     <Content>
-      <Scroll className="list">
+      <Scroll className="list" onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS}></Slider>
           <RecommendList recommendList={recommendListJS}></RecommendList>
@@ -40,10 +41,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     getBannerDataDispatch() {
-      dispatch(actionTypes.getBannerList())
+      dispatch(actionCreators.getBannerList())
     },
     getRecommendListDataDispatch() {
-      dispatch(actionTypes.getRecommendList())
+      dispatch(actionCreators.getRecommendList())
     }
   }
 }
