@@ -1,40 +1,51 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Scroll from '../../baseUI/scroll'
 import Slider from '../../components/slider'
 import RecommendList from '../../components/list'
 import { Content } from './style'
-import { getBannerRequest, getRecommendListRequest } from '../../api/request'
+import { connect } from 'react-redux'
+import * as actionTypes from './store/actionCreators'
 
-function Recommend() {
-  const [bannerList, setBannerList] = useState([])
-  const [recommendList, setRecommendList] = useState([])
+function Recommend(props) {
+  const { bannerList, recommendList } = props
 
-  useEffect(() => {
-    async function fetchData() {
-      const { banners } = await getBannerRequest()
-      setBannerList(banners)
-    }
-    fetchData()
-  }, [])
+  const { getBannerDataDispatch, getRecommendListDataDispatch } = props
 
   useEffect(() => {
-    async function fetchData() {
-      const { result } = await getRecommendListRequest()
-      setRecommendList(result)
-    }
-    fetchData()
+    getBannerDataDispatch()
+    getRecommendListDataDispatch()
+    // eslint-disable-next-line
   }, [])
+
+  const bannerListJS = bannerList ? bannerList.toJS() : []
+  const recommendListJS = recommendList ? recommendList.toJS() : []
 
   return (
     <Content>
       <Scroll className="list">
         <div>
-          <Slider bannerList={bannerList}></Slider>
-          <RecommendList recommendList={recommendList}></RecommendList>
+          <Slider bannerList={bannerListJS}></Slider>
+          <RecommendList recommendList={recommendListJS}></RecommendList>
         </div>
       </Scroll>
     </Content>
   )
 }
 
-export default React.memo(Recommend)
+const mapStateToProps = (state) => ({
+  bannerList: state.getIn(['recommend', 'bannerList']),
+  recommendList: state.getIn(['recommend', 'recommendList'])
+})
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getBannerDataDispatch() {
+      dispatch(actionTypes.getBannerList())
+    },
+    getRecommendListDataDispatch() {
+      dispatch(actionTypes.getRecommendList())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Recommend))
