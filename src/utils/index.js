@@ -1,0 +1,1 @@
+export { getCount } from './getCount'

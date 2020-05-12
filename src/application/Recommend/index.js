@@ -1,23 +1,29 @@
-import React from 'react'
-import Scroll from '../../components/scroll'
+import React, { useState, useEffect } from 'react'
+import Scroll from '../../baseUI/scroll'
 import Slider from '../../components/slider'
 import RecommendList from '../../components/list'
 import { Content } from './style'
-
+import { getBannerRequest, getRecommendListRequest } from '../../api/request'
 
 function Recommend() {
-  const bannerList = [1, 2, 3, 4].map(item => {
-    return { imageUrl: 'http://p1.music.126.net/ZYLJ2oZn74yUz5x8NBGkVA==/109951164331219056.jpg' }
-  })
+  const [bannerList, setBannerList] = useState([])
+  const [recommendList, setRecommendList] = useState([])
 
-  const recommendList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => {
-    return {
-      id: 1,
-      picUrl: 'https://p1.music.126.net/fhmefjUfMD-8qtj3JKeHbA==/18999560928537533.jpg',
-      playCount: 17171122,
-      name: "朴树、许巍、李健、郑钧、老狼、赵雷"
+  useEffect(() => {
+    async function fetchData() {
+      const { banners } = await getBannerRequest()
+      setBannerList(banners)
     }
-  })
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    async function fetchData() {
+      const { result } = await getRecommendListRequest()
+      setRecommendList(result)
+    }
+    fetchData()
+  }, [])
 
   return (
     <Content>

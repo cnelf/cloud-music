@@ -1,5 +1,5 @@
 import React from 'react'
-import { getCount } from '../../api/utils'
+import { getCount } from '../../utils'
 import {
   ListWrapper,
   List,
@@ -23,7 +23,7 @@ function RecommendList(props) {
                     <span className="count">{ getCount(item.playCount) }</span>
                   </div>
                 </div>
-                <div class="desc">{item.name}</div>
+                <div className="desc">{item.name}</div>
               </ListItem>
             )
           })
