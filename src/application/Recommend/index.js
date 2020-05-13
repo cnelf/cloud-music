@@ -14,8 +14,12 @@ function Recommend(props) {
   const { getBannerDataDispatch, getRecommendListDataDispatch } = props
 
   useEffect(() => {
-    getBannerDataDispatch()
-    getRecommendListDataDispatch()
+    if (!bannerList.size) {
+      getBannerDataDispatch()
+    }
+    if (!recommendList.size) {
+      getRecommendListDataDispatch()
+    }
     // eslint-disable-next-line
   }, [])
 
