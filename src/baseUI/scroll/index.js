@@ -2,6 +2,8 @@ import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle } f
 import PropTypes from 'prop-types'
 import BScroll from 'better-scroll'
 import styled from 'styled-components'
+import Loading from '../Loading'
+import LoadingV2 from '../LoadingV2'
 
 const ScrollContainer = styled.div`
   width: 100%;
@@ -9,14 +11,39 @@ const ScrollContainer = styled.div`
   overflow: hidden;
 `
 
+const PullUpLoading = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  z-index: 100;
+`
+
+const PullDownLoading = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 30px;
+  margin: auto;
+  z-index: 100;
+`
+
 const Scroll = forwardRef((props, ref) => {
   const [bScroll, setBScroll] = useState(null)
 
   const ScrollContainerRef = useRef(null)
 
-  const { direction, click, refresh, bounceTop, bounceBottom } = props
+  const { direction, click, refresh, bounceTop, bounceBottom, pullUpLoading, pullDownLoading } = props
 
   const { pullUp, pullDown, onScroll } = props
+
+  const pullUpLoadingDisplay = pullUpLoading ? {display: ''} : {display: 'none'}
+
+  const pullDownLoadingDisplay = pullDownLoading ? {display: ''} : {display: 'none'}
 
   useEffect(() => {
     const scroll = new BScroll(ScrollContainerRef.current, {
@@ -95,6 +122,8 @@ const Scroll = forwardRef((props, ref) => {
   return (
     <ScrollContainer ref={ScrollContainerRef}>
       { props.children }
+      <PullUpLoading style={pullUpLoadingDisplay}><Loading></Loading></PullUpLoading>
+      <PullDownLoading style={pullDownLoadingDisplay}><LoadingV2></LoadingV2></PullDownLoading>
     </ScrollContainer>
   )
 })
