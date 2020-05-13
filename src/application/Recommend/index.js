@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import { forceCheck } from 'react-lazyload'
 import { actionCreators } from './store'
 import { Content } from './style'
-import Scroll from '../../baseUI/scroll'
+import Scroll from '../../baseUI/Scroll'
+import Loading from '../../baseUI/Loading'
 import Slider from '../../components/slider'
 import RecommendList from '../../components/list'
 
 function Recommend(props) {
-  const { bannerList, recommendList } = props
+  const { bannerList, recommendList, enterLoading } = props
 
   const { getBannerDataDispatch, getRecommendListDataDispatch } = props
 
@@ -29,13 +30,15 @@ function Recommend(props) {
           <RecommendList recommendList={recommendListJS}></RecommendList>
         </div>
       </Scroll>
+      { enterLoading ? <Loading></Loading> : null }
     </Content>
   )
 }
 
 const mapStateToProps = (state) => ({
   bannerList: state.getIn(['recommend', 'bannerList']),
-  recommendList: state.getIn(['recommend', 'recommendList'])
+  recommendList: state.getIn(['recommend', 'recommendList']),
+  enterLoading: state.getIn(['recommend', 'enterLoading'])
 })
 
 const mapDispatchToProps = (dispatch) => {
