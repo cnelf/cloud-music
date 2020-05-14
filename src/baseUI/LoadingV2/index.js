@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components'
 import style from '../../assets/global-style'
 
 const dance = keyframes`
-  0%, 40% 100% {
+  0%, 40%, 100% {
     transform: scaleY(0.4);
     transform-origin: center 100%;
   }

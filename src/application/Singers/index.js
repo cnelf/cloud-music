@@ -4,7 +4,9 @@ import HorizonList from '../../baseUI/HorizonList'
 import { categoryTypes, alphaTypes } from '../../api/config'
 import { NavContainer, ListContainer, List, ListItem } from './style'
 import Scroll from '../../baseUI/Scroll'
+import Loading from '../../baseUI/Loading'
 import * as actionCreators from './store/actionCreators'
+import LazyLoad, { forceCheck } from 'react-lazyload'
 
 function Singers(props) {
   const { singetList, enterLoading, pullUpLoading, pullDownLoading, pageCount } = props
@@ -50,7 +52,9 @@ function Singers(props) {
             return (
               <ListItem key={item.accountId + '' + index}>
                 <div className="img-wrapper">
-                  <img src={`${item.picUrl}?params=300x300`} width="100%" height="100%" alt="singer" />
+                  <LazyLoad placeholder={<img src={require('./singer.png')} width="100%" height="100%" alt="singer" />}>
+                    <img src={`${item.picUrl}?params=300x300`} width="100%" height="100%" alt="singer" />
+                  </LazyLoad>
                 </div>
                 <span className="name">{item.name}</span>
               </ListItem>
@@ -68,11 +72,13 @@ function Singers(props) {
         <HorizonList list={alphaTypes} title={'首字母:'} oldVal={alpha} handleClick={(val) => handleUpdateAlpha(val)}></HorizonList>
       </NavContainer>
       <ListContainer>
+        { enterLoading ? <Loading></Loading> : null }
         <Scroll
           pullUpLoading={pullUpLoading}
           pullDownLoading={pullDownLoading}
           pullUp={handlePullUp}
           pullDown={handlePullDown}
+          onScroll={forceCheck}
         >
           { renderSingerList() }
         </Scroll>
